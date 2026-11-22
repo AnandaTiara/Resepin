@@ -1,0 +1,45 @@
+rules_version = '2';
+
+// Salin isi file ini ke: Firebase Console -> Firestore Database -> Rules -> Publish
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // Profil + favorit + riwayat: pribadi, hanya pemilik akun.
+    match /users/{uid} {
+      allow read, write: if signedIn() && request.auth.uid == uid;
+    }
+
+    // Resep: dibaca semua pengguna yang login; hanya penulis yang boleh ubah/hapus.
+    // seed == true hanya dipakai sekali untuk mengisi resep contoh.
+    match /recipes/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn() &&
+        (request.resource.data.authorId == request.auth.uid || request.resource.data.seed == true);
+      allow update: if signedIn() &&
+        resource.data.authorId == request.auth.uid &&
+        request.resource.data.authorId == resource.data.authorId;
+      allow delete: if signedIn() && resource.data.authorId == request.auth.uid;
+    }
+
+    // Komentar: dibaca semua pengguna yang login; hanya penulis yang boleh ubah/hapus.
+    match /comments/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn() &&
+        (request.resource.data.authorId == request.auth.uid || request.resource.data.seed == true);
+      allow update: if signedIn() &&
+        resource.data.authorId == request.auth.uid &&
+        request.resource.data.authorId == resource.data.authorId;
+      allow delete: if signedIn() && resource.data.authorId == request.auth.uid;
+    }
+
+    // Playlist: pribadi, hanya pemilik.
+    match /playlists/{id} {
+      allow read, update, delete: if signedIn() && resource.data.ownerId == request.auth.uid;
+      allow create: if signedIn() && request.resource.data.ownerId == request.auth.uid;
+    }
+  }
+}

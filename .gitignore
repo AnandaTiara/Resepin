@@ -1,0 +1,25 @@
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Rahasia
+*.jks
+*.keystore
+keystore.properties
+.env
+serviceAccountKey.json
+
+# Build
+app/build/
+*.apk
+*.aab
+
+app/google-services.json
+README.md
