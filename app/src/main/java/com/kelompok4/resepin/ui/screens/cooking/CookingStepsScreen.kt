@@ -98,7 +98,7 @@ fun CookingStepsScreen(
         onBack = onBack,
         onToggle = viewModel::toggleStep,
         onFinish = {
-            val msg = if (state.doneCount == state.steps.size) "Selamat! ${state.recipeTitle} siap disajikan 🎉"
+            val msg = if (state.doneCount == state.steps.size) "Selamat, ${state.recipeTitle} siap disajikan!"
             else "Selesai memasak ${state.recipeTitle}"
             onFinish(msg)
         },

@@ -8,13 +8,17 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.kelompok4.resepin.ui.theme.Background
+import com.kelompok4.resepin.ui.theme.SurfaceVariant
 
 /**
  * Scaffold standar semua layar: latar krem, top bar di bawah status bar,
@@ -40,7 +44,15 @@ fun AppScaffold(
             }
         },
         floatingActionButton = floatingActionButton,
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = {
+            SnackbarHost(snackbarHostState) { data ->
+                Snackbar(
+                    snackbarData = data,
+                    shape = RoundedCornerShape(12.dp),
+                    containerColor = SurfaceVariant,
+                )
+            }
+        },
         content = content,
     )
 }
